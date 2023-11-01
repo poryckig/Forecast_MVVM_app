@@ -1,33 +1,36 @@
 package Forecast.View;
 
-import Forecast.ViewModels.ForecastViewModel;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import Forecast.ViewModels.ForecastViewModel;       // do ViewModel
 
 public class GUI {
 
     private static Scene guiScene;
-
     private static Pane root;
     private final static double SCENE_WIDTH = 200;
     private final static double SCENE_HEIGHT = 300;
-
-    private ForecastViewModel viewModel = new ForecastViewModel();
 
     private TextField hour1TextField;
     private TextField day1TextField;
     private TextField days5TextField;
     private TextField airQualityTextField;
     private TextField neighborsTextField;
+    private ForecastViewModel viewModel;    // do ViewModel
 
-    public GUI() {
+    public void initializeView(Stage stage, GUI gui) {
+        viewModel = new ForecastViewModel(gui);
         initializeScene();
-        bindViewModel();
+        bindViewModel();                 // do ViewModel
+        initializeStage(stage);
+    }
+
+    public void displayResponse(String response) {
+        System.out.println(response);
     }
 
     private void initializeScene() {
@@ -40,12 +43,18 @@ public class GUI {
         createButtons(root);
     }
 
-    private void bindViewModel() {
-        hour1TextField.textProperty().bindBidirectional(viewModel.getLocation());
-        day1TextField.textProperty().bindBidirectional(viewModel.getLocation());
-        days5TextField.textProperty().bindBidirectional(viewModel.getLocation());
-        airQualityTextField.textProperty().bindBidirectional(viewModel.getLocation());
-        neighborsTextField.textProperty().bindBidirectional(viewModel.getLocation());
+    private void bindViewModel() {            // do ViewModel
+        hour1TextField.textProperty().bindBidirectional(viewModel.getLocation1Hour());
+        day1TextField.textProperty().bindBidirectional(viewModel.getLocation1Day());
+        days5TextField.textProperty().bindBidirectional(viewModel.getLocation5Days());
+        airQualityTextField.textProperty().bindBidirectional(viewModel.getLocationAirQuality());
+        neighborsTextField.textProperty().bindBidirectional(viewModel.getLocationNeighbors());
+    }
+
+    private void initializeStage(Stage stage) {
+        stage.setTitle("Forecast");
+        stage.setScene(guiScene);
+        stage.show();
     }
 
     private void createLabels(Pane root) {
@@ -86,178 +95,89 @@ public class GUI {
 
     // ---------------- LABELS ----------------
     private void create1HourLabel(Pane root){
-        Label label = new Label("1 Hour");
-
-        label.setFont(new Font(13));
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(SCENE_WIDTH / 2 - 20);
-        label.setLayoutY(15);
-
+        LabelView label = new LabelView("1 Hour", 13, Pos.CENTER, SCENE_WIDTH / 2 - 20, 15);
         root.getChildren().add(label);
     }
 
     private void create1DayLabel(Pane root){
-        Label label = new Label("1 Day");
-
-        label.setFont(new Font(13));
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(SCENE_WIDTH / 2 - 20);
-        label.setLayoutY(70);
-
+        LabelView label = new LabelView("1 Day", 13, Pos.CENTER, SCENE_WIDTH / 2 - 20, 70);
         root.getChildren().add(label);
     }
 
     private void create5DaysLabel(Pane root){
-        Label label = new Label("5 Days");
-
-        label.setFont(new Font(13));
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(SCENE_WIDTH / 2 - 20);
-        label.setLayoutY(125);
-
+        LabelView label = new LabelView("5 Days", 13, Pos.CENTER, SCENE_WIDTH / 2 - 20, 125);
         root.getChildren().add(label);
     }
 
     private void createAirQualityLabel(Pane root){
-        Label label = new Label("Air Quality");
-
-        label.setFont(new Font(13));
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(SCENE_WIDTH / 2 - 20);
-        label.setLayoutY(185);
-
+        LabelView label = new LabelView("Air Quality", 13, Pos.CENTER, SCENE_WIDTH / 2 - 20, 185);
         root.getChildren().add(label);
     }
 
     private void createNeighborsLabel(Pane root){
-        Label label = new Label("Neighbors");
-
-        label.setFont(new Font(13));
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(SCENE_WIDTH / 2 - 20);
-        label.setLayoutY(240);
-
+        LabelView label = new LabelView("Neighbors", 13, Pos.CENTER, SCENE_WIDTH / 2 - 20, 240);
         root.getChildren().add(label);
     }
 
     // ---------------- TEXTFIELDS ----------------
     private void create1HourTextField(Pane root){
-        hour1TextField = new TextField("");
-        hour1TextField.setFont(new Font(13));
-        hour1TextField.setAlignment(Pos.CENTER);
-        hour1TextField.setPrefWidth(125);
-        hour1TextField.setLayoutX(5);
-        hour1TextField.setLayoutY(35);
+        hour1TextField = new TextFieldView(13, Pos.CENTER, 125, 5, 35);
         root.getChildren().add(hour1TextField);
     }
 
     private void create1DayTextField(Pane root){
-        day1TextField = new TextField("");
-        day1TextField.setFont(new Font(13));
-        day1TextField.setAlignment(Pos.CENTER);
-        day1TextField.setPrefWidth(125);
-        day1TextField.setLayoutX(5);
-        day1TextField.setLayoutY(95);
+        day1TextField = new TextFieldView(13, Pos.CENTER, 125, 5, 95);
         root.getChildren().add(day1TextField);
     }
 
     private void create5DaysTextField(Pane root){
-        days5TextField = new TextField("");
-        days5TextField.setFont(new Font(13));
-        days5TextField.setAlignment(Pos.CENTER);
-        days5TextField.setPrefWidth(125);
-        days5TextField.setLayoutX(5);
-        days5TextField.setLayoutY(145);
+        days5TextField = new TextFieldView(13, Pos.CENTER, 125, 5, 145);
         root.getChildren().add(days5TextField);
     }
 
     private void createAirQualityTextField(Pane root){
-        airQualityTextField = new TextField("");
-        airQualityTextField.setFont(new Font(13));
-        airQualityTextField.setAlignment(Pos.CENTER);
-        airQualityTextField.setPrefWidth(125);
-        airQualityTextField.setLayoutX(5);
-        airQualityTextField.setLayoutY(205);
+        airQualityTextField = new TextFieldView(13, Pos.CENTER, 125, 5, 205);
         root.getChildren().add(airQualityTextField);
     }
 
     private void createNeighborsTextField(Pane root){
-        neighborsTextField = new TextField("");
-        neighborsTextField.setFont(new Font(13));
-        neighborsTextField.setAlignment(Pos.CENTER);
-        neighborsTextField.setPrefWidth(125);
-        neighborsTextField.setLayoutX(5);
-        neighborsTextField.setLayoutY(260);
+        neighborsTextField = new TextFieldView(13, Pos.CENTER, 125, 5, 260);
         root.getChildren().add(neighborsTextField);
     }
 
     // ---------------- BUTTONS ----------------
-    private void create1HourButton(Pane root){
-        Button button = new Button("Search");
-        button.setFont(new Font(13));
-        button.setAlignment(Pos.CENTER);
-        button.setLayoutX(140);
-        button.setLayoutY(35);
+    private void create1HourButton(Pane root) {
+        ButtonView button = new ButtonView("Search", 13, Pos.CENTER, 140, 35);
 
-        button.setOnAction(e -> viewModel.search1HourForecast);
+        button.setOnAction(e -> viewModel.search1HourForecast());
         root.getChildren().add(button);
-
-        /*
-        ForecastViewModel actionEvent = new ForecastViewModel();
-        actionEvent.clicked1HourButton(button, hour1TextField);
-
-        */
     }
 
     private void create1DayButton(Pane root){
-        Button button = new Button("Search");
-        button.setFont(new Font(13));
-        button.setAlignment(Pos.CENTER);
-        button.setLayoutX(140);
-        button.setLayoutY(95);
-        root.getChildren().add(button);
+        ButtonView button = new ButtonView("Search", 13, Pos.CENTER, 140, 95);
 
-        ForecastViewModel actionEvent = new ForecastViewModel();
-        actionEvent.clicked1DayButton(button, day1TextField);
+        button.setOnAction(e -> viewModel.search1DayForecast());
+        root.getChildren().add(button);
     }
 
     private void create5DaysButton(Pane root){
-        Button button = new Button("Search");
-        button.setFont(new Font(13));
-        button.setAlignment(Pos.CENTER);
-        button.setLayoutX(140);
-        button.setLayoutY(145);
-        root.getChildren().add(button);
+        ButtonView button = new ButtonView("Search", 13, Pos.CENTER, 140, 145);
 
-        ForecastViewModel actionEvent = new ForecastViewModel();
-        actionEvent.clicked5DaysButton(button, days5TextField);
+        button.setOnAction(e -> viewModel.search5DaysForecast());
+        root.getChildren().add(button);
     }
 
     private void createAirQualityButton(Pane root){
-        Button button = new Button("Search");
-        button.setFont(new Font(13));
-        button.setAlignment(Pos.CENTER);
-        button.setLayoutX(140);
-        button.setLayoutY(205);
-        root.getChildren().add(button);
+        ButtonView button = new ButtonView("Search", 13, Pos.CENTER, 140, 205);
 
-        ForecastViewModel actionEvent = new ForecastViewModel();
-        actionEvent.clickedAirQualityButton(button, airQualityTextField);
+        button.setOnAction(e -> viewModel.searchAirQuality());
+        root.getChildren().add(button);
     }
 
     private void createNeighborsButton(Pane root){
-        Button button = new Button("Search");
-        button.setFont(new Font(13));
-        button.setAlignment(Pos.CENTER);
-        button.setLayoutX(140);
-        button.setLayoutY(260);
+        ButtonView button = new ButtonView("Search", 13, Pos.CENTER, 140, 260);
+
+        button.setOnAction(e -> viewModel.searchNeighbors());
         root.getChildren().add(button);
-
-        ForecastViewModel actionEvent = new ForecastViewModel();
-        actionEvent.clickedNeighborsButton(button, neighborsTextField);
-    }
-
-    public Scene getGuiScene() {
-        return guiScene;
     }
 }

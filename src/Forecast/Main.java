@@ -1,19 +1,16 @@
 package Forecast;
 
-import Forecast.View.GUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import Forecast.View.GUI;
+
 public class Main extends Application {
-    static Stage stage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Forecast");
         GUI gui = new GUI();
-        primaryStage.setScene(gui.getGuiScene());
-        primaryStage.show();
-
-        stage = primaryStage;
+        gui.initializeView(primaryStage, gui);
     }
 
     public static void main(String[] args){
